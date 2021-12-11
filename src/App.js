@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { Button } from 'react-bootstrap'
 import './App.css';
 
 const buttonStyle = {
@@ -32,14 +31,22 @@ const statusIconDisconnected = {
   height: '5px', width: '5px', borderRadius: '50%', marginTop: '1.5px', backgroundColor: 'red'
 }
 
+// Sometimes using Web3 packages like Web3 are just not ideal and you need a simple solution to work with MetaMask. Here are some simple solutions and code snippets you can use
+// to get rolling on better understanding how to make simple transactions with MetaMask wallet directly using window.ethereum
+
 function App() {
 
   const [ walletAccount, setWalletAccount ] = useState('')
+  const [ currentChain, setCurrentChain ] = useState('')
   const [ isConnected, setIsConnected ] = useState(false)
 
+
+  // Initialize the application and MetaMask Event Handlers
   useEffect(() => {
     
     const provider = window.ethereum
+
+    // Setup Listen Handlers on MetaMask change events
 
     if(typeof provider !== 'undefined') {
         // Add Listener when accounts switch
@@ -52,21 +59,27 @@ function App() {
         
         // Do something here when Chain changes
         provider.on('chainChanged', (chaindId) => {
+
           console.log('Chain ID changed: ', chaindId)
-          if(chaindId !== '0x1') { //0x1 is Mainnet
-            // alert('Chain Not Supported')
-          }
+          setCurrentChain(chaindId)
+
         })
 
     } else {
+
         alert('Please install MetaMask to use this service!')
+
     }
   }, [])
 
+  // Used to see if the wallet is currently connected to the application
+  // If an account has been accessed with MetaMask, then the wallet is connected to the application.
   useEffect(() => {
       setIsConnected(walletAccount ? true : false)
   }, [walletAccount])
 
+  // Connect the Wallet to the current selected account in MetaMask. 
+  // Will generate a login request for user if no account is currently connected to the application
   const handleConnectWallet = async () => {
 
       console.log('Connecting MetaMask...')
@@ -79,12 +92,15 @@ function App() {
       setWalletAccount(account)
   }
 
+  // Handle Disconnected. Removing the state of the account connected to your app should be enough to handle Disconnect with your application.
   const handleDisconnect = async () => {
+
       console.log('Disconnecting MetaMask...')
       setIsConnected(false)
       setWalletAccount('')
   }
 
+  // Connect Once and set the account. Can be used to trigger a new account request each time, unlike 'eth_requestAccounts'
   const handleConnectOnce = async () => {
 
       const provider = window.ethereum
@@ -99,12 +115,14 @@ function App() {
 
   }
 
-  const handleTransaction = async () => {
+  // Request the personal signature of the user via MetaMask and deliver a message.
+  const handlePersonalSign = async () => {
 
     console.log('Sign Authentication')
 
     const message = [
-      "I have read and accept the terms and conditions (https://example.org/tos) of this app.",
+      "This site is requesting your signature to approve login authorization!",
+      "I have read and accept the terms and conditions (https://example.org/) of this app.",
       "Please sign me in!"
     ].join("\n\n")
 
@@ -119,7 +137,7 @@ function App() {
     <div className="App">
         <div className="container" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column', height: '100%' }}>
 
-            <div className="connect-button" onClick={handleTransaction} style={buttonStyle}>
+            <div className="connect-button" onClick={isConnected ? handleConnectWallet : handleDisconnect} style={buttonStyle}>
                 <div className="left-status" style={leftStatus}>
                     {
                       isConnected ? (
