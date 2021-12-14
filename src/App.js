@@ -39,23 +39,29 @@ const statusIconDisconnected = {
 function App() {
 
   const [ walletAccount, setWalletAccount ] = useState('')
+
+  th
   const [ currentChain, setCurrentChain ] = useState('')
   const [ showBalanceModal, setShowBalanceModal ] = useState(false)
   const [ showTransactionModal, setShowTransactionModal ] = useState(false)
+
+
+
   const [ isConnected, setIsConnected ] = useState(false)
+  
+  
+  
+  
   const [ ethBalance, setEthBalance ] = useState(null)
 
 
   // Initialize the application and MetaMask Event Handlers
   useEffect(() => {
-    
-    const provider = window.ethereum
 
     // Setup Listen Handlers on MetaMask change events
-
-    if(typeof provider !== 'undefined') {
+    if(typeof window.ethereum !== 'undefined') {
         // Add Listener when accounts switch
-        provider.on('accountsChanged', (accounts) => {
+        window.ethereum.on('accountsChanged', (accounts) => {
 
           console.log('Account changed: ', accounts[0])
           setWalletAccount(accounts[0])
@@ -63,7 +69,7 @@ function App() {
         })
         
         // Do something here when Chain changes
-        provider.on('chainChanged', (chaindId) => {
+        window.ethereum.on('chainChanged', (chaindId) => {
 
           console.log('Chain ID changed: ', chaindId)
           setCurrentChain(chaindId)
@@ -88,16 +94,16 @@ function App() {
   const handleConnectWallet = async () => {
 
       console.log('Connecting MetaMask...')
-      const provider = window.ethereum
 
-      const accounts = await provider.request({ method: 'eth_requestAccounts' })
+      const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' })
       const account = accounts[0]
       
       console.log('Account: ', account)
       setWalletAccount(account)
   }
 
-  // Handle Disconnected. Removing the state of the account connected to your app should be enough to handle Disconnect with your application.
+  // Handle Disconnected. Removing the state of the account connected 
+  // to your app should be enough to handle Disconnect with your application.
   const handleDisconnect = async () => {
 
       console.log('Disconnecting MetaMask...')
@@ -105,16 +111,16 @@ function App() {
       setWalletAccount('')
   }
 
-  // Connect Once and set the account. Can be used to trigger a new account request each time, unlike 'eth_requestAccounts'
+  // Connect Once and set the account. 
+  // Can be used to trigger a new account request each time, 
+  // unlike 'eth_requestAccounts'
   const handleConnectOnce = async () => {
 
-      const provider = window.ethereum
-
-      const accounts = await provider.request({ method: 'wallet_requestPermissions',
+      const accounts = await window.ethereum.request({ method: 'wallet_requestPermissions',
           params: [{
             eth_accounts: {}
           }]
-      }).then(() => provider.request({ method: 'eth_requestAccounts' }))
+      }).then(() => window.ethereum.request({ method: 'eth_requestAccounts' }))
       
       setWalletAccount(accounts[0])
 
@@ -156,20 +162,20 @@ function App() {
 
   }
  
-  const handleSendTransaction = async (sender, receiver, amount ) => {
-    const send = '0x9997A28A0a530739Aa254f81717eb81536aeab8D'
-    const receive = '0x58A7f952f1C01D17349F7f17286523D798648D34'
+  const handleSendTransaction = async (sender, receiver, amount) => {
     const gasPrice = '0x5208' // 21000 Gas Price
     const amountHex = (amount * Math.pow(10,18)).toString(16)
     
     const tx = {
-      from: send,
-      to: receive,
+      from: sender,
+      to: receiver,
       value: amountHex,
       gas: gasPrice,
     }
 
     await window.ethereum.request({ method: 'eth_sendTransaction', params: [ tx ]})
+
+    setShowTransactionModal(false)
   }
 
   const handleCloseBalanceModal = () => {
