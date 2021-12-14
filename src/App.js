@@ -4,34 +4,14 @@ import './App.css';
 import BalanceModal from './components/BalanceModal';
 import TransactionModal from './components/TransactionModal';
 
-const buttonStyle = {
-    backgroundColor: '#181A20',
-    fontSize: '14px', 
-    color: '#FFF',
-    borderRadius: '4px',
-    border: '1px solid #181A20',
-    display: 'flex',
-    padding: '5px 7.5px',
-    cursor: 'pointer'
-}
-
-const leftStatus = {
-    width: '12px', 
-    height: '100%', 
-    display: 'flex', 
-    alignItems: 'center', 
-    justifyContent: 'center', 
-    flexShrink: 0,
-    marginRight: '5px'
-}
-
-const statusIconConnected = {
-  height: '5px', width: '5px', borderRadius: '50%', marginTop: '1.5px', backgroundColor: 'green'
-}
-
-const statusIconDisconnected = {
-  height: '5px', width: '5px', borderRadius: '50%', marginTop: '1.5px', backgroundColor: 'red'
-}
+import { 
+  containerStyle,
+  buttonStyle,
+  leftStatus,
+  statusIconConnected,
+  statusIconDisconnected,
+  rowStyle 
+} from './styles/styles'
 
 // Sometimes using Web3 packages like Web3 are just not ideal and you need a simple solution to work with MetaMask. Here are some simple solutions and code snippets you can use
 // to get rolling on better understanding how to make simple transactions with MetaMask wallet directly using window.ethereum
@@ -39,19 +19,10 @@ const statusIconDisconnected = {
 function App() {
 
   const [ walletAccount, setWalletAccount ] = useState('')
-
-  th
   const [ currentChain, setCurrentChain ] = useState('')
   const [ showBalanceModal, setShowBalanceModal ] = useState(false)
   const [ showTransactionModal, setShowTransactionModal ] = useState(false)
-
-
-
   const [ isConnected, setIsConnected ] = useState(false)
-  
-  
-  
-  
   const [ ethBalance, setEthBalance ] = useState(null)
 
 
@@ -192,9 +163,9 @@ function App() {
 
   return (
     <div className="App">
-        <div className="container" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column', height: '100%' }}>
+        <div className="container" style={containerStyle}>
 
-            <div className="row" style={{width: '500px',display: 'flex', justifyContent: 'center', borderRadius: '4px', border: '1px solid #181A20', padding: '10px'}}>
+            <div className="row" style={rowStyle}>
               <div className="header-title" style={{marginBottom: '20px'}}>Connect Your Account by clicking the button below<br /> Clicking again will disconnect</div>
               <div className="connect-button" onClick={!isConnected ? handleConnectWallet : handleDisconnect} style={{...buttonStyle, maxWidth: '130px',}}>
 
@@ -226,40 +197,40 @@ function App() {
               </div>
             </div>
 
-            <div className="row" style={{width: '500px', display: 'flex', justifyContent: 'center', borderRadius: '4px', border: '1px solid #181A20', padding: '10px', marginTop: '20px'}}>
+            <div className="row" style={rowStyle}>
               <div className="header-title" style={{marginBottom: '20px'}}>Disconnect Wallet from Application</div>
-              <div className="connect-button" onClick={handleDisconnect} style={{justifyContent: 'center', ...buttonStyle, maxWidth: '130px',}}>
+              <div className="connect-button" onClick={handleDisconnect} style={buttonStyle}>
                   Disconnect
               </div>
             </div>
 
-            <div className="row" style={{width: '500px', display: 'flex', justifyContent: 'center', borderRadius: '4px', border: '1px solid #181A20', padding: '10px', marginTop: '20px'}}>
+            <div className="row" style={rowStyle}>
               <div className="header-title" style={{marginBottom: '20px'}}>Reconnect after disconnect. (Connect Once)</div>
-              <div className="connect-button" onClick={handleConnectOnce} style={{justifyContent: 'center', ...buttonStyle, maxWidth: '130px',}}>
+              <div className="connect-button" onClick={handleConnectOnce} style={buttonStyle}>
                   Connect
               </div>
             </div>
 
-            <div className="row" style={{width: '500px', display: 'flex', justifyContent: 'center', borderRadius: '4px', border: '1px solid #181A20', padding: '10px', marginTop: '20px'}}>
+            <div className="row" style={rowStyle}>
               <div className="header-title" style={{marginBottom: '20px'}}>Personal Sign (Signature Request w/Message)</div>
-              <button className="connect-button" onClick={handlePersonalSign} style={{...buttonStyle, justifyContent: 'center', maxWidth: '130px', }}>
+              <button className="connect-button" onClick={handlePersonalSign} style={buttonStyle}>
                   Personal-Sign
               </button>
             </div>
 
-            <div className="row" style={{width: '500px', display: 'flex', justifyContent: 'center', borderRadius: '4px', border: '1px solid #181A20', padding: '10px', marginTop: '20px'}}>
+            <div className="row" style={rowStyle}>
               <div className="header-title" style={{marginBottom: '20px'}}>Send Transaction ETH</div>
 
-              <button className="connect-button" onClick={handleOpenTransactionModal} style={{...buttonStyle, justifyContent: 'center', maxWidth: '130px', }}>
+              <button className="connect-button" onClick={handleOpenTransactionModal} style={buttonStyle}>
                   Send
               </button>
 
             </div>
 
-            <div className="row" style={{width: '500px', display: 'flex', justifyContent: 'center', borderRadius: '4px', border: '1px solid #181A20', padding: '10px', marginTop: '20px'}}>
+            <div className="row" style={rowStyle}>
               <div className="header-title" style={{marginBottom: '20px'}}>Get Account Balance</div>
 
-              <button className="connect-button" onClick={handleGetBalance} style={{...buttonStyle, justifyContent: 'center', maxWidth: '130px', }}>
+              <button className="connect-button" onClick={handleGetBalance} style={buttonStyle}>
                   Get Balance
               </button>
 
@@ -274,7 +245,7 @@ function App() {
         }
         {
           showTransactionModal && (
-            <TransactionModal handleCloseModal={handleCloseTransactionModal} handleSendTransaction={handleSendTransaction} walletAccount={walletAccount} handleConnectWallet={handleConnectWallet} />
+            <TransactionModal handleCloseModal={handleCloseTransactionModal} handleSendTransaction={handleSendTransaction} />
           )
         }
     </div>

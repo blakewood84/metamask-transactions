@@ -3,31 +3,10 @@ import { AiOutlineClose } from 'react-icons/ai'
 import { Form, Button } from 'react-bootstrap'
 import Web3 from 'web3';
 
-const inputStyle = {
-    width: '50%', 
-    backgroundColor: '#181A20',  
-    border: '1px solid', 
-    borderImageSlice: 1,  
-    borderImageSource: 'linear-gradient(to left, #734ad5, #d53a9d', 
-    color: '#fff',
-    overflow: 'hidden',
-    textOverflow: 'ellipsis'
-}
-
-const modalStyle = {
-    position: 'absolute', 
-    width: '500px', 
-    height: '350px', 
-    border: '1px solid #4206F1', 
-    borderRadius: '4px', 
-    top: '50%', left: '50%', 
-    transform: 'translate(-50%, -50%)', 
-    backgroundColor: 'black', 
-    display: 'flex', 
-    justifyContent: 'center', 
-    alignItems: 'center', 
-    flexDirection: 'column'
-}
+import { 
+    inputStyle,
+    modalStyle
+  } from '../styles/styles'
 
 const TransactionModal = ({ handleSendTransaction, handleCloseModal }) => {
 
@@ -103,7 +82,7 @@ const TransactionModal = ({ handleSendTransaction, handleCloseModal }) => {
                 onChange={handleFormChange} 
                 name="sender" type="text" 
                 placeholder="Sender's Address" 
-                style={{ ...inputStyle, margin: '10px 0px' }} 
+                style={inputStyle} 
             />
             <Form.Control 
                 isInvalid={receiveError ? true : false} 
@@ -118,7 +97,7 @@ const TransactionModal = ({ handleSendTransaction, handleCloseModal }) => {
                 onChange={handleFormChange}
                 name="amount" type="text" 
                 placeholder="Amount in ETH" 
-                style={{...inputStyle, margin: '10px 0px'}} 
+                style={inputStyle} 
             />
             <div style={{marginTop: '40px', width: '100%', padding: '0px 20px'}}>
                 <Button onClick={sendTransaction} size="sm" style={{width: '100px'}}>Send</Button>
