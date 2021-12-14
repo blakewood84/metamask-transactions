@@ -1,3 +1,5 @@
+![Image Preview](/public/images/preview.gif)
+
 # MetaMask Transactions
 
 A tutorial for learning how to manage your MetaMask transactions with your blockchain application
@@ -8,4 +10,3 @@ A tutorial for learning how to manage your MetaMask transactions with your block
 
 2. `yarn dev` or `npm run dev`
 
-![Image Preview](/public/images/preview.gif)
