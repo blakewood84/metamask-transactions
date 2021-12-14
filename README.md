@@ -7,3 +7,5 @@ A tutorial for learning how to manage your MetaMask transactions with your block
 1. `yarn` or `npm install`
 
 2. `yarn dev` or `npm run dev`
+
+![Image Preview](/public/images/preview.gif)
