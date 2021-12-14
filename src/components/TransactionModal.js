@@ -14,17 +14,12 @@ const TransactionModal = ({ handleSendTransaction, handleCloseModal }) => {
     const [ selectedWallet, setSelectedWallet ] = useState('')
     const [ sendError, setSendError ] = useState(false)
     const [ receiveError, setReceiveError ] = useState(false)
-    const [ amountError, setAmountError ] = useState(false)
 
+    // Init Modal
+    // Get selected account in MetaMask
     useEffect(() => {
         getAccount()
     }, [])
-
-    // Check to make sure the Sender is selected in MetaMask wallet
-    // Will cause error if not
-    useEffect(() => {
-
-    }, [form])
 
     const getAccount = async () => {
         
@@ -40,7 +35,6 @@ const TransactionModal = ({ handleSendTransaction, handleCloseModal }) => {
     }
     
     const handleFormChange = (event) => {
-        console.log(form)
         
         setForm({
             ...form,
@@ -57,6 +51,8 @@ const TransactionModal = ({ handleSendTransaction, handleCloseModal }) => {
         if(!checkSender) setSendError(true)
         if(!checkReceiver) setReceiveError(true)
 
+        // Check to make sure the Sender is selected in MetaMask wallet
+        // Will cause error if Sender is not selected
         if(selectedWallet !== form.sender) {
             alert('Please select the sender account in your MetaMask wallet!');
         }
@@ -68,8 +64,6 @@ const TransactionModal = ({ handleSendTransaction, handleCloseModal }) => {
 
         }
     }
-
-    // Check if Sender & Receiver is a valid ETH address
 
     return (
         <div className="custom-modal" style={modalStyle}>
